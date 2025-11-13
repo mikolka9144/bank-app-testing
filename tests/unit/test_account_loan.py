@@ -2,13 +2,14 @@ from src.account import Account
 import pytest
 
 class TestAccount:
+
     @pytest.fixture
     def ext_account(self):
         self.ext_account = Account("John","Doe","321")
         self.ext_account.balance = 100
         return self.ext_account
 
-    @pytest.mark.parametrize("history", [([100,20,100,200,100,-100]),([100,100,150,50,100,-100]),([100,100,100,100,100,-100])])
+    @pytest.mark.parametrize("history", [([100,20,100,180,100,-100]),([100,100,150,50,100,-100]),([100,100,100,100,100,-100])])
     def test_history_loan(self,ext_account,history):
         self.ext_account.history= history
         self.ext_account.balance += sum(self.ext_account.history)
