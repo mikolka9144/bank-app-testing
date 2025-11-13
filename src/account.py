@@ -18,6 +18,7 @@ class BaseAccount:
         self.history.append(-provision)
 
 
+
 class Account(BaseAccount):
     def __init__(self, first_name, last_name,pesel,promo_code=None):
         super().__init__()
@@ -41,6 +42,12 @@ class Account(BaseAccount):
         return current_year - year
     def express_transfer(self,amount,recipient_account):
         super().express_transfer(amount,recipient_account,1)
+    def submit_for_loan(self,amount):
+        con1 = len(self.history) >= 3 and self.history[-1] > 0  and self.history[-2] > 0  and self.history[-3] > 0
+        con2 = len(self.history)>=5 and sum(self.history[-5:]) > amount;
+        if con1 or con2:
+            self.balance += amount
+        return con1 or con2
     
 class CompanyAccount(BaseAccount):
         def __init__(self, company_name, nip_number):
