@@ -1,4 +1,4 @@
-from account import Account
+from src.account import Account
 
 class AccountsRegistry:
     def __init__(self):
