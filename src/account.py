@@ -59,3 +59,8 @@ class CompanyAccount(BaseAccount):
                 self.nip_number = nip_number
         def express_transfer(self,amount,recipient_account):
             super().express_transfer(amount,recipient_account,5)
+        def take_loan(self,amount):
+            con = self.balance*2>amount and (-1775 in self.history)
+            if con:
+                self.balance += amount
+            return con
