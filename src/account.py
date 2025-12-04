@@ -48,8 +48,6 @@ class Account(BaseAccount):
         if con1 or con2:
             self.balance += amount
         return con1 or con2
-    def toJson(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
     
 class CompanyAccount(BaseAccount):
         def __init__(self, company_name, nip_number):
