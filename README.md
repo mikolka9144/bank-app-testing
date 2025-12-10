@@ -9,6 +9,6 @@ surname:
 group:
 
 ## How to start the app
-python3 -m flask --app src/app/api.py --debug run
+python3 -m flask --app app/api.py --debug run
 
 ## How to execute tests

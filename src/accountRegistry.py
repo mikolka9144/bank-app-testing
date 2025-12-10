@@ -6,8 +6,13 @@ class AccountsRegistry:
 
     def add_account(self, new_account):
         self.accounts.append(new_account)
+    def account_exists(self,pesel):
+        for x in self.accounts:
+            if x.pesel == pesel:
+                return True
+        return False
 
-    def find_account_by_pesel(self, pesel):
+    def find_account_by_pesel(self, pesel) -> Account:
         for account in self.accounts:
             if account.pesel == pesel:
                 return account
