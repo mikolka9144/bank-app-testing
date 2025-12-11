@@ -1,4 +1,5 @@
 from src.account import CompanyAccount
+import pytest
 
 class TestCompanyAccount:
     def test_create_company_account(self):
@@ -9,8 +10,15 @@ class TestCompanyAccount:
         testificate = CompanyAccount("Test Company","1234590")
         assert testificate.company_name == "Test Company"
         assert testificate.nip_number == "Invalid"
+    def test_invalid_company_nip_account(self,mocker):
+        mocker.patch("src.account.CompanyAccount.is_nip_valid", return_value=False)
+        with pytest.raises(ValueError):
+            testificate = CompanyAccount("Test Company","1234567890")
 
-    def test_company_money_transfer(self):
+        
+
+    def test_company_money_transfer(self,mocker):
+        mocker.patch("src.account.CompanyAccount.is_nip_valid", return_value=True)
         target = CompanyAccount("Test Company","1234590")
         target.balance = 100
         testificate = CompanyAccount("Test Company","1234590")

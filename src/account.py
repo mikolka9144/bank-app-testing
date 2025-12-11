@@ -1,4 +1,8 @@
 import math
+import requests
+import datetime
+import os
+from json import load 
 
 class BaseAccount:
     def __init__(self):
@@ -56,8 +60,19 @@ class CompanyAccount(BaseAccount):
             self.company_name = company_name
             if(len(nip_number) != 10):
                 self.nip_number = "Invalid"
-            else:
+            elif(self.is_nip_valid(nip_number)):
                 self.nip_number = nip_number
+            else:
+                raise ValueError("Company not registered!!")
+        def is_nip_valid(self,nip) -> bool:
+            urlRoot = os.getenv("BANK_APP_MF_URL","https://wl-test.mf.gov.pl")
+            date = datetime.date.today().strftime("%Y-%m-%d")
+            response = requests.get(f"{urlRoot}/api/search/nip/{nip}?{date}")
+            
+            if response.status_code == 200:
+                return load(response.content).result.subject.statusVat == "Czynny"
+            else:
+                return False
         def express_transfer(self,amount,recipient_account):
             super().express_transfer(amount,recipient_account,5)
         def take_loan(self,amount):
