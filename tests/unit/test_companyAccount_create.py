@@ -1,6 +1,10 @@
-from src.account import CompanyAccount
+from app.companyAccount import CompanyAccount
+import pytest
 
 class TestCompanyAccount:
+    @pytest.fixture(autouse=True)
+    def set_up(self,mocker):
+        mocker.patch("app.companyAccount.CompanyAccount.is_nip_valid", return_value=True)
     def test_create_company_account(self):
         testificate = CompanyAccount("Test Company","1234567890")
         assert testificate.company_name == "Test Company"
@@ -9,8 +13,14 @@ class TestCompanyAccount:
         testificate = CompanyAccount("Test Company","1234590")
         assert testificate.company_name == "Test Company"
         assert testificate.nip_number == "Invalid"
+    def test_invalid_company_nip_account(self,mocker):
+        mocker.patch("app.companyAccount.CompanyAccount.is_nip_valid", return_value=False)
+        with pytest.raises(ValueError):
+            testificate = CompanyAccount("Test Company","1234567890")
 
-    def test_company_money_transfer(self):
+        
+
+    def test_company_money_transfer(self,mocker):
         target = CompanyAccount("Test Company","1234590")
         target.balance = 100
         testificate = CompanyAccount("Test Company","1234590")

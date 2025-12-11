@@ -1,4 +1,8 @@
 import math
+import requests
+import datetime
+import os
+
 
 class BaseAccount:
     def __init__(self):
@@ -50,18 +54,4 @@ class Account(BaseAccount):
             self.balance += amount
         return con1 or con2
     
-class CompanyAccount(BaseAccount):
-        def __init__(self, company_name, nip_number):
-            super().__init__()
-            self.company_name = company_name
-            if(len(nip_number) != 10):
-                self.nip_number = "Invalid"
-            else:
-                self.nip_number = nip_number
-        def express_transfer(self,amount,recipient_account):
-            super().express_transfer(amount,recipient_account,5)
-        def take_loan(self,amount):
-            con = self.balance*2>amount and (-1775 in self.history)
-            if con:
-                self.balance += amount
-            return con
+

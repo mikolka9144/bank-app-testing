@@ -1,8 +1,11 @@
-from src.account import CompanyAccount
+from app.companyAccount import CompanyAccount
 import pytest
 
 class TestCompanyAccount:
 
+    @pytest.fixture(autouse=True)
+    def set_up(self,mocker):
+        mocker.patch("app.companyAccount.CompanyAccount.is_nip_valid", return_value=True)
     @pytest.fixture
     def ext_account(self):
         self.ext_account = CompanyAccount("Test Company","1234567890")
