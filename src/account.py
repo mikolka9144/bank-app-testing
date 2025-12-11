@@ -2,7 +2,7 @@ import math
 import requests
 import datetime
 import os
-from json import load 
+
 
 class BaseAccount:
     def __init__(self):

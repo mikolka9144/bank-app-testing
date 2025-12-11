@@ -3,6 +3,7 @@ import requests
 import json
 import datetime
 from src.account import BaseAccount
+from json import load 
 
 class CompanyAccount(BaseAccount):
         def __init__(self, company_name, nip_number):
