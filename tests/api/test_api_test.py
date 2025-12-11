@@ -24,11 +24,18 @@ class TestAccount:
             data=json.dumps({
                 "first_name": "TEst",
                 "last_name": "Kowalski",
-                "pesel": "321456"
+                "pesel": "32145612323"
             }),
             headers={"Content-Type": "application/json"}
         ).status_code == 201
-        
+        assert requests.post(
+            URL + "/api/accounts/32145612323/transfer",
+            data=json.dumps({
+                "amount": "100",
+                "type": "incoming"
+            }),
+            headers={"Content-Type": "application/json"}
+        ).status_code == 201
         yield 
 
         get_req = requests.get(URL+"api/accounts")
@@ -55,7 +62,101 @@ class TestAccount:
         get_req = requests.get(URL+"api/accounts/"+ext_account.pesel)
 
         assert post_req.status_code == 201
+        assert get_req.status_code == 200    
+    def test_account_transfer_in(self,ext_account):
+        post_req = requests.post(
+            URL + "/api/accounts/32145612323/transfer",
+            data=json.dumps({
+                "amount": "50",
+                "type": "incoming"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+        get_req = requests.get(URL+"api/accounts/"+ext_account.pesel)
+
+        assert post_req.status_code == 201
         assert get_req.status_code == 200
+
+    def test_account_transfer_out(self,ext_account):
+        post_req = requests.post(
+            URL + "/api/accounts/32145612323/transfer",
+            data=json.dumps({
+                "amount": 50,
+                "type": "outgoing"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+        get_req = requests.get(URL+"api/accounts/"+ext_account.pesel)
+
+        assert post_req.status_code == 201
+        assert get_req.status_code == 200    
+        
+    def test_account_transfer_out_outofMoney(self,ext_account):
+        post_req = requests.post(
+            URL + "/api/accounts/32145612323/transfer",
+            data=json.dumps({
+                "amount": "5000",
+                "type": "outgoing"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+
+        assert post_req.status_code == 422   
+    def test_account_transfer_noAccount(self,ext_account):
+        post_req = requests.post(
+            URL + "/api/accounts/32145612300/transfer",
+            data=json.dumps({
+                "amount": "5000",
+                "type": "outgoing"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+
+        assert post_req.status_code == 404
+
+    def test_account_transfer_express(self,ext_account):
+        post_req = requests.post(
+            URL + "/api/accounts/32145612323/transfer",
+            data=json.dumps({
+                "amount": "50",
+                "type": "express"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+        get_req = requests.post(
+            URL + "/api/accounts/32145612323/transfer",
+            data=json.dumps({
+                "amount": "49",
+                "type": "outgoing"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+
+        assert post_req.status_code == 201
+        assert get_req.status_code == 201
+
+    def test_account_add_failOnAlreadyExisting(self,ext_account):
+        post_req = requests.post(
+            URL + "api/accounts",
+            data=json.dumps({
+                "first_name": ext_account.first_name,
+                "last_name": ext_account.last_name,
+                "pesel": "32222222121"
+            }),
+            headers={"Content-Type": "application/json"}
+        )       
+        post_req2 = requests.post(
+            URL + "api/accounts",
+            data=json.dumps({
+                "first_name": ext_account.first_name,
+                "last_name": ext_account.last_name,
+                "pesel": "32222222121"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+
+        assert post_req.status_code == 201
+        assert post_req2.status_code == 409
 
     def test_account_getAll(self,ext_account):
         

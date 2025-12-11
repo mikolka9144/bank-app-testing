@@ -7,9 +7,10 @@ class BaseAccount:
     def transfer_money(self, amount, recipient_account):
         if amount <= self.balance:
             self.balance -= amount
-            recipient_account.balance += amount
             self.history.append(-amount)
-            recipient_account.history.append(amount)
+            if recipient_account is not None:
+                recipient_account.balance += amount
+                recipient_account.history.append(amount)
     def express_transfer(self,amount,recipient_account,provision = 0):
         if amount > self.balance:
             return
