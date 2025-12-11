@@ -1,6 +1,7 @@
 import unittest
 
-from src.account import Account, CompanyAccount  # Adjust the import based on your project structure
+from src.account import Account  # Adjust the import based on your project structure
+from app.companyAccount import CompanyAccount
 
 class TestAccountHistory:
     def test_transaction_standard_transfers(self):
