@@ -35,3 +35,10 @@ class TestRegistry:
         assert self.account1 in self.registry.get_all_accounts()
         assert self.account2 in self.registry.get_all_accounts()
         assert len(self.registry.get_all_accounts()) == 2
+
+    def test_account_exists(self):
+        self.registry.add_account(self.account1)
+        assert self.registry.account_exists(self.account1.pesel)  
+
+    def test_account_doesnt_exists(self):
+        assert not self.registry.account_exists(self.account1.pesel)
