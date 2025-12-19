@@ -2,7 +2,7 @@ import math
 import requests
 import datetime
 import os
-
+from smtp.smtp import SMTPClient
 
 class BaseAccount:
     def __init__(self):
@@ -21,7 +21,8 @@ class BaseAccount:
         self.transfer_money(amount,recipient_account)
         self.balance -= provision
         self.history.append(-provision)
-
+    def send_history_via_email(self,email_address,account_type):
+        return SMTPClient.send("Account Transfer History "+str(datetime.date.today()),account_type+" account history: "+str(self.history),email_address)
 
 
 class Account(BaseAccount):
@@ -53,5 +54,7 @@ class Account(BaseAccount):
         if con1 or con2:
             self.balance += amount
         return con1 or con2
+    def send_history_via_email(self,email_address):
+        return super().send_history_via_email(email_address,"Personal")
     
 

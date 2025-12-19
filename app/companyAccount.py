@@ -31,3 +31,5 @@ class CompanyAccount(BaseAccount):
             if con:
                 self.balance += amount
             return con
+        def send_history_via_email(self,email_address):
+            return super().send_history_via_email(email_address,"Company")
