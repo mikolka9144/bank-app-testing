@@ -35,7 +35,7 @@ def get_account_by_pesel(pesel):
     acc = registry.find_account_by_pesel(pesel)
     if acc is not None:
         return jsonify({"first_name": acc.first_name, "last_name": acc.last_name, "pesel":
-        acc.pesel}), 200
+        acc.pesel,"balance": acc.balance}), 200
     else:
         return "Error", 404
 
