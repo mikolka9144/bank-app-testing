@@ -24,4 +24,5 @@ jobs:
           
       - name: Execute API tests
         run: |
+          ls
           python3 -m pytest tests/api
