@@ -1,19 +1,39 @@
 from behave import *
-import requests
+import requests, json
 
 URL = "http://localhost:5000"
 
+
+@step('I create an account using name: "{name}", last name: "{last_name}", pesel: "{pesel}" with balance: "{balance}"')
+def create_account(context, name, last_name, pesel,balance = None):
+    json_body = {
+        "first_name": name,
+        "last_name": last_name,
+        "pesel": pesel,
+
+    }
+    create_resp = requests.post(URL + "/api/accounts", json=json_body)
+    assert create_resp.status_code == 201
+    post_req = requests.post(
+            URL + "/api/accounts/"+pesel+"/transfer",
+            data=json.dumps({
+                "amount": f"{balance}",
+                "type": "incoming"
+            }),
+            headers={"Content-Type": "application/json"}
+        )
+    assert post_req.status_code == 201
 
 @step('I create an account using name: "{name}", last name: "{last_name}", pesel: "{pesel}"')
 def create_account(context, name, last_name, pesel):
     json_body = {
         "first_name": name,
         "last_name": last_name,
-        "pesel": pesel
+        "pesel": pesel,
+        
     }
     create_resp = requests.post(URL + "/api/accounts", json=json_body)
     assert create_resp.status_code == 201
-
 
 @step('Account registry is empty')
 def clear_account_registry(context):
