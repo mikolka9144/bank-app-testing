@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from src.accountRegistry import AccountsRegistry
 from src.account import Account
+from app.MongoAccountsRepository import MongoAccountsRepository
 
 
 app = Flask(__name__)
 registry = AccountsRegistry()
+database = MongoAccountsRepository(registry)
 
 @app.route("/api/accounts", methods=['POST'])
 def create_account():
@@ -23,6 +25,15 @@ def get_all_accounts():
     accounts_data = [{"name": acc.first_name, "surname": acc.last_name, "pesel":
     acc.pesel, "balance": acc.balance} for acc in accounts]
     return jsonify(accounts_data), 200
+
+@app.route("/api/accounts/save", methods=['POST'])
+def save_accounts_db():
+    database.save_all()
+    return "Done", 200
+@app.route("/api/accounts/load", methods=['POST'])
+def load_accounts_db():
+    database.load_all()
+    return "Done", 200
 
 @app.route("/api/accounts/count", methods=['GET'])
 def get_account_count():
