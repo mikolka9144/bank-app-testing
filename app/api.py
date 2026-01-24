@@ -64,11 +64,11 @@ def transfer_money(pesel):
 def update_account(pesel):
     acc = registry.find_account_by_pesel(pesel)
     if acc is not None:
-        data = request.get_json()
-        if data.first_name is not None:
-            acc.first_name = data.first_name        
-        if data.last_name is not None:
-            acc.last_name = data.last_name
+        data:dict = request.get_json()
+        if data.get("first_name",None) is not None:
+            acc.first_name = data.get("first_name")        
+        if data.get("last_name",None) is not None:
+            acc.last_name = data.get("last_name")
         return jsonify({"message": "Account updated"}), 200
     else:
         return "Error", 404

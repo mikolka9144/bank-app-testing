@@ -30,3 +30,6 @@ jobs:
       - name: Execute API tests
         run: |
           python3 -m pytest tests/api
+      - name: Execute Gherkin tests
+        run: |
+          python3 -m behave
