@@ -62,7 +62,14 @@ class TestAccount:
         get_req = requests.get(URL+"api/accounts/"+ext_account.pesel)
 
         assert post_req.status_code == 201
-        assert get_req.status_code == 200    
+        assert get_req.status_code == 200
+
+    def test_account_saveLoad(self,ext_account):
+        save_req = requests.post(URL+"api/accounts/save")
+        assert requests.delete(URL+"/api/accounts/32111111111").status_code == 200
+        load_req = requests.post(URL+"api/accounts/load")
+        assert requests.get(URL+f"/api/accounts/32111111111").status_code == 200 
+
     def test_account_transfer_in(self,ext_account):
         post_req = requests.post(
             URL + "/api/accounts/32145612323/transfer",

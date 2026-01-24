@@ -4,6 +4,7 @@ import json
 import datetime
 from src.account import BaseAccount
 from json import load 
+from typing import Any
 
 class CompanyAccount(BaseAccount):
         def __init__(self, company_name, nip_number):
@@ -33,3 +34,15 @@ class CompanyAccount(BaseAccount):
             return con
         def send_history_via_email(self,email_address):
             return super().send_history_via_email(email_address,"Company")
+        def to_dict(self) -> dict[str, Any]:
+            return {
+                "company_name":self.company_name,
+                "nip_number":self.nip_number,
+                "balance":self.balance,
+                "history":self.history
+            }
+        def from_dict(dict):
+            obj = CompanyAccount(dict["company_name"],dict["nip_number"])
+            obj.history = dict["history"]
+            obj.balance = dict["balance"]
+            return obj

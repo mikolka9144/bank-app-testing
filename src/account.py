@@ -2,6 +2,7 @@ import math
 import requests
 import datetime
 import os
+from typing import Any
 from smtp.smtp import SMTPClient
 
 class BaseAccount:
@@ -23,7 +24,16 @@ class BaseAccount:
         self.history.append(-provision)
     def send_history_via_email(self,email_address,account_type):
         return SMTPClient.send("Account Transfer History "+str(datetime.date.today()),account_type+" account history: "+str(self.history),email_address)
-
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "balance":self.balance,
+            "history":self.history
+        }
+    def from_dict(dict):
+            obj = BaseAccount()
+            obj.history = dict["history"]
+            obj.balance = dict["balance"]
+            return obj
 
 class Account(BaseAccount):
     def __init__(self, first_name, last_name,pesel,promo_code=None):
@@ -56,5 +66,17 @@ class Account(BaseAccount):
         return con1 or con2
     def send_history_via_email(self,email_address):
         return super().send_history_via_email(email_address,"Personal")
-    
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "first_name":self.first_name,
+            "last_name":self.last_name,
+            "pesel":self.pesel,
+            "balance":self.balance,
+            "history":self.history
+        }
+    def from_dict(dict):
+        obj = Account(dict["first_name"],dict["last_name"],dict["pesel"])
+        obj.history = dict["history"]
+        obj.balance = dict["balance"]
+        return obj
 
