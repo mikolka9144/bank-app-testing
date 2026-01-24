@@ -24,7 +24,7 @@ def get_all_accounts():
     accounts = registry.get_all_accounts()
     accounts_data = [{"name": acc.first_name, "surname": acc.last_name, "pesel":
     acc.pesel, "balance": acc.balance} for acc in accounts]
-    return jsonify(accounts_data), 200@app.route("/api/accounts", methods=['GET'])
+    return jsonify(accounts_data), 200
 
 @app.route("/api/accounts/save", methods=['POST'])
 def save_accounts_db():
