@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from src.accountRegistry import AccountsRegistry
 from src.account import Account
-from src.MongoAccountsRepository import MongoAccountsRepository
+from app.MongoAccountsRepository import MongoAccountsRepository
 
 
 app = Flask(__name__)
