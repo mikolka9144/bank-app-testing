@@ -15,8 +15,8 @@ test('Wyszukiwanie pracownika Sołtysa i sprawdzenie szczegółów', async ({ pa
 
   await pracownicy.openSkladOsobowy();
 
-  await sklad.searchByName('sołtys');
-  await sklad.openEmployee('mgr Konrad Sołtys');
+  await sklad.searchByName('Anna Baran');
+  await sklad.openEmployee('mgr Anna Baran');
 
-  await details.expectRoomNumber('4.19');
+  await details.expectToWorkIn('Instytut Fizyki Doświadczalnej');
 });
